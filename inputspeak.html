@@ -1,0 +1,77 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Text to Voice</title>
+  </head>
+  <body>
+    <div id="console"></div>
+    
+    <input type="color" name="inputText" id="inputText" value="" />
+    <input type="file" name="inputText" id="inputText" value="" />
+    <input type="datetime-local" name="inputText" id="inputText" value="" />
+    <input type="radio" name="inputText" id="inputText" value="wla"/>
+    <select name="inputText" id="inputText">
+        <option value="I love you">I love you</option>
+        <option value="fuck">fuck</option>
+        
+        
+    </select>
+    <input type="week" name="inputText" id="inputText" value="" />
+    <input type="range" name="" id="inputText" value="" />
+    <input type="checkbox" name="inputText" id="inputText" value="hai"/>
+    <input type="text" id="inputText" placeholder="Enter text to speak" />
+    <button id="speak">Speak</button>
+    <script src="artyom.window.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <script>
+      const artyom = new Artyom();
+      document.getElementById("speak").addEventListener(
+        "click",
+        function() {
+          const inputText = document.getElementById("inputText").value;
+          if (inputText !== "") {
+            artyom.say("hello");
+          }
+        },
+        false
+      );
+      artyom.addCommands([
+        {
+          indexes: ["Hello"],
+          action: i => {
+            artyom.say("Hello! What can I do for you, master?");
+          }
+        },
+        {
+          indexes: ["Shutdown"],
+          action: (i, wildcard) => {
+            artyom.fatality().then(() => {
+              console.log("Artyom successfully stopped");
+            });
+          }
+        }
+      ]);
+
+      artyom
+        .initialize({
+          lang: "en-GB",
+          continuous: true,
+          soundex: true,
+          debug: true,
+          executionKeyword: "and do it now",
+          listen: true
+        })
+        .then(() => {
+          console.log("Artyom has been successfully initialized");
+          $("#console").append("Please speak to execute a command");
+        })
+        .catch(err => {
+          console.log("Artyom couldn't be initialized", err);
+          $("#console").append("Artyom couldn't be initialized", err);
+        });
+    </script>
+  </body>
+</html>
